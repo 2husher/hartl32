@@ -71,6 +71,16 @@ feature User do
     scenario { should_not be_valid }
   end
 
+  feature "email address with mixed case" do
+    let(:mixed_case_email) { "Foo@ExAMPle.CoM" }
+
+    scenario "should be saved as all lower-case" do
+      @user.email = mixed_case_email
+      @user.save
+      @user.reload.email.should == mixed_case_email.downcase
+    end
+  end
+
   feature "when password is not present" do
     before { @user.password = @user.password_confirmation = " " }
     scenario { should_not be_valid }
