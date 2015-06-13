@@ -12,6 +12,7 @@ feature User do
   scenario { should respond_to(:password_digest) }
   scenario { should respond_to(:password) }
   scenario { should respond_to(:password_confirmation) }
+  scenario { should respond_to(:remember_token) }
   scenario { should respond_to(:authenticate) }
 
   scenario { should be_valid }
@@ -109,11 +110,16 @@ feature User do
       scenario { should == found_user.authenticate(@user.password) }
     end
 
-    describe "with invalid password" do
+    feature "with invalid password" do
       let(:user_for_invalid_password) { found_user.authenticate("invalid") }
 
       scenario { should_not == user_for_invalid_password }
       scenario { user_for_invalid_password.should == false }
     end
+  end
+
+  feature "remember token" do
+    before { @user.save }
+    scenario{ @user.remember_token.should_not be_blank }
   end
 end

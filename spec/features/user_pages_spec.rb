@@ -57,6 +57,16 @@ feature "User pages" do
 
         scenario { should have_title(user.name) }
         scenario { should have_selector('div.alert.alert-success', text: 'Welcome') }
+
+        scenario { should have_link('Sign out') }
+      end
+
+      feature "followed by signout" do
+        before do
+          click_button submit
+          click_link "Sign out"
+        end
+        scenario { should have_link('Sign in') }
       end
     end
   end
