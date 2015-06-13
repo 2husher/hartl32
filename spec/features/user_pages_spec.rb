@@ -24,6 +24,19 @@ feature "User pages" do
       scenario "should not create a user" do
         expect { click_button submit }.not_to change(User, :count)
       end
+
+      feature "after submission" do
+        before { click_button submit }
+
+        scenario { should have_title('Sign up') }
+        scenario { should have_content('error') }
+        scenario { should have_content("Password can't be blank") }
+        scenario { should have_content("Password is too short (minimum is 6 characters)") }
+        scenario { should have_content("Name can't be blank") }
+        scenario { should have_content("Email can't be blank") }
+        scenario { should have_content("Email is invalid") }
+        scenario { should have_content("Password confirmation can't be blank") }
+      end
     end
 
     feature "with valid information" do
@@ -36,6 +49,14 @@ feature "User pages" do
 
       scenario "should create a user" do
         expect { click_button submit }.to change(User, :count).by(1)
+      end
+
+      feature "after saving the user" do
+        before { click_button submit }
+        let(:user) { User.find_by(email: 'user@example.com') }
+
+        scenario { should have_title(user.name) }
+        scenario { should have_selector('div.alert.alert-success', text: 'Welcome') }
       end
     end
   end
