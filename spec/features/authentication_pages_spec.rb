@@ -18,7 +18,7 @@ feature "Authentication" do
       before { click_button "Sign in" }
 
       scenario { should have_title('Sign in') }
-      scenario { should have_css('div.alert.alert-error', text: 'Invalid') }
+      scenario { should have_error_message('Invalid') }
 
       feature "after visiting another page" do
         before { click_link "Home" }
@@ -27,12 +27,8 @@ feature "Authentication" do
     end
 
     feature "with valid information" do
-      let(:user) { FactoryGirl.create(:user) }
-      before do
-        fill_in "Email",    with: user.email.upcase
-        fill_in "Password", with: user.password
-        click_button "Sign in"
-      end
+      given(:user) { FactoryGirl.create(:user) }
+      before { valid_signin(user) }
 
       scenario { should have_title(user.name) }
       scenario { should have_link('Profile', href: user_path(user)) }

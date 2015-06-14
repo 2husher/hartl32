@@ -73,7 +73,7 @@ feature User do
   end
 
   feature "email address with mixed case" do
-    let(:mixed_case_email) { "Foo@ExAMPle.CoM" }
+    given(:mixed_case_email) { "Foo@ExAMPle.CoM" }
 
     scenario "should be saved as all lower-case" do
       @user.email = mixed_case_email
@@ -104,14 +104,14 @@ feature User do
 
   feature "return value of authenticate method" do
     before { @user.save }
-    let(:found_user) { User.find_by_email(@user.email) }
+    given(:found_user) { User.find_by_email(@user.email) }
 
     feature "with valid password" do
       scenario { should == found_user.authenticate(@user.password) }
     end
 
     feature "with invalid password" do
-      let(:user_for_invalid_password) { found_user.authenticate("invalid") }
+      given(:user_for_invalid_password) { found_user.authenticate("invalid") }
 
       scenario { should_not == user_for_invalid_password }
       scenario { user_for_invalid_password.should == false }

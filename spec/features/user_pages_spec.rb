@@ -5,7 +5,7 @@ feature "User pages" do
   subject { page }
 
   feature "profile page" do
-    let(:user) { FactoryGirl.create(:user) }
+    given(:user) { FactoryGirl.create(:user) }
     before { visit user_path(user) }
 
     scenario { should have_selector('h1',    text: user.name) }
@@ -18,7 +18,7 @@ feature "User pages" do
     scenario { should have_selector('h1', text: 'Sign up') }
     scenario { should have_title('Sign up') }
 
-    let(:submit) { "Create my account" }
+    given(:submit) { "Create my account" }
 
     feature "with invalid information" do
       scenario "should not create a user" do
@@ -53,7 +53,7 @@ feature "User pages" do
 
       feature "after saving the user" do
         before { click_button submit }
-        let(:user) { User.find_by(email: 'user@example.com') }
+        given(:user) { User.find_by(email: 'user@example.com') }
 
         scenario { should have_title(user.name) }
         scenario { should have_selector('div.alert.alert-success', text: 'Welcome') }
