@@ -30,21 +30,19 @@ gem 'rails4-autocomplete'
 gem 'better_errors', group: :development
 
 group :test do
-  gem 'capybara', '~> 2.2.1'
+  gem 'capybara', '2.2.1'
   gem 'factory_girl_rails'
   gem 'rb-inotify'
   gem 'libnotify'
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 2.14'
+  gem 'rspec-rails', '2.99.0'
   gem 'minitest'
   gem 'byebug'
   gem 'web-console', '~> 2.0'
   gem 'spring'
-  gem 'guard-rspec'
-  gem 'guard-spork'
   gem 'childprocess'
-  #gem 'spork'
-  gem 'spork-rails'#, :github => 'sporkrb/spork-rails'
+  #gem 'spork'#, :github => 'manafire/spork'
+  #gem 'spork-rails'#, :github => 'sporkrb/spork-rails'
 end
