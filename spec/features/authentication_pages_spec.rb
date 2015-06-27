@@ -73,8 +73,15 @@ feature "Authentication" do
 
         describe "visiting the user index" do
           before { visit users_path }
-          it { should have_title('Sign in') }
+          scenario { should have_title('Sign in') }
         end
+      end
+
+      feature "visiting Home page" do
+        before { visit root_path }
+
+        scenario { should_not have_link('Profile',  href: user_path(user)) }
+        scenario { should_not have_link('Settings', href: edit_user_path(user)) }
       end
     end
 

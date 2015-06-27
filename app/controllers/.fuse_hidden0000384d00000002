@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :signed_in_user,    only: [:index, :edit, :update, :destroy]
-  before_filter :correct_user,      only: [:edit, :update]
-  before_filter :admin_user,        only: :destroy
+  before_filter :signed_in_user, only: [:index, :edit, :update, :destroy]
+  before_filter :correct_user,   only: [:edit, :update]
+  before_filter :admin_user,     only: :destroy
   before_filter :already_signed_in, only: [:new, :create]
 
   def index
@@ -20,7 +20,8 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       sign_in @user
-      redirect_to @user, flash: { success: "Welcome to the Sample App!" }
+      flash[:success] = "Welcome to the Sample App!"
+      redirect_to @user
     else
       render 'new'
     end
@@ -34,7 +35,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
       sign_in @user
-      redirect_to @user, flash: { success: "Profile updated" }
+      flash[:success] = "Profile updated"
+      redirect_to @user
     else
       render 'edit'
     end
@@ -44,7 +46,7 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     unless current_user?(user)
       user.destroy
-      redirect_to users_url, flash: { success: "User destroyed." }
+      redirect_to users_url, success: "User destroyed."
     else
       redirect_to root_url, notice: "You can't delete youself"
     end
