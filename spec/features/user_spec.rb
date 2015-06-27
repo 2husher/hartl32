@@ -13,9 +13,20 @@ feature User do
   scenario { should respond_to(:password) }
   scenario { should respond_to(:password_confirmation) }
   scenario { should respond_to(:remember_token) }
+  scenario { should respond_to(:admin) }
   scenario { should respond_to(:authenticate) }
 
   scenario { should be_valid }
+  scenario { should_not be_admin }
+
+  feature "with admin attribute set to 'true'" do
+    before do
+      @user.save!
+      @user.toggle!(:admin)
+    end
+
+    scenario { should be_admin }
+  end
 
   feature "when name is not present" do
     before { @user.name = " " }
