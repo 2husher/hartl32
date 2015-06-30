@@ -18,6 +18,12 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'bcrypt'
 gem 'faker'
 
+gem 'simplecov', :require => false, :group => :test
+gem 'reek'
+gem "rails_best_practices"
+
+gem 'brakeman'
+
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
