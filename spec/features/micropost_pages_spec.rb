@@ -22,11 +22,23 @@ feature "Micropost pages" do
       end
     end
 
-    describe "with valid information" do
+    feature "with valid information" do
 
       before { fill_in 'micropost_content', with: "Lorem ipsum" }
       scenario "should create a micropost" do
         expect { click_button "Post" }.to change(Micropost, :count).by(1)
+      end
+    end
+  end
+
+  feature "micropost destruction" do
+    before { FactoryGirl.create(:micropost, user: user) }
+
+    feature "as correct user" do
+      before { visit root_path }
+
+      scenario "should delete a micropost" do
+        expect { click_link "delete" }.to change(Micropost, :count).by(-1)
       end
     end
   end
