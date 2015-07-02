@@ -4,7 +4,7 @@ feature "Static pages" do
   subject { page }
 
   shared_examples_for "all static pages" do
-    it { should have_selector('h1', text: heading) }
+    it { should have_css('h1', text: heading) }
     it { should have_title(full_title(page_title)) }
   end
 
@@ -16,6 +16,22 @@ feature "Static pages" do
 
     it_should_behave_like "all static pages"
     scenario { should_not have_title('| Home') }
+
+    feature "for signed-in users" do
+      given(:user) { FactoryGirl.create(:user) }
+      before do
+        FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
+        FactoryGirl.create(:micropost, user: user, content: "Dolor sit amet")
+        valid_signin user
+        visit root_path
+      end
+
+      scenario "should render the user's feed" do
+        user.feed.each do |item|
+          page.should have_css("li##{item.id}", text: item.content)
+        end
+      end
+    end
   end
 
   feature "Help page" do
