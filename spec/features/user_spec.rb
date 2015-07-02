@@ -157,5 +157,15 @@ feature User do
         Micropost.find_by(id:micropost_id).should be_nil
       end
     end
+
+    feature "status" do
+      given(:unfollowed_post) do
+        FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
+      end
+
+      scenario { @user.feed.should include(newer_micropost) }
+      scenario { @user.feed.should include(older_micropost) }
+      scenario { @user.feed.should_not include(unfollowed_post) }
+    end
   end
 end
