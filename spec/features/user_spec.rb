@@ -15,6 +15,7 @@ feature User do
   scenario { should respond_to(:remember_token) }
   scenario { should respond_to(:admin) }
   scenario { should respond_to(:authenticate) }
+  scenario { should respond_to(:microposts) }
 
   scenario { should be_valid }
   scenario { should_not be_admin }
@@ -132,5 +133,29 @@ feature User do
   feature "remember token" do
     before { @user.save }
     scenario{ @user.remember_token.should_not be_blank }
+  end
+
+  feature "micropost associations" do
+
+    before { @user.save }
+    given!(:older_micropost) do
+      FactoryGirl.create(:micropost, user: @user, created_at: 1.day.ago)
+    end
+    given!(:newer_micropost) do
+      FactoryGirl.create(:micropost, user: @user, created_at: 1.hour.ago)
+    end
+
+    scenario "should have the right microposts in the right order" do
+      @user.microposts.should == [newer_micropost, older_micropost]
+    end
+
+    scenario "should destroy associated microposts" do
+      microposts_ids = @user.microposts.map(&:id)
+      @user.destroy
+      microposts_ids.should_not be_empty
+      microposts_ids.each do |micropost_id|
+        Micropost.find_by(id:micropost_id).should be_nil
+      end
+    end
   end
 end
