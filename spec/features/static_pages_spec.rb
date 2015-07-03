@@ -36,6 +36,23 @@ feature "Static pages" do
         scenario { should have_css("span", text: "2 microposts") }
       end
     end
+
+    feature "feed pagination" do
+      given(:user) { FactoryGirl.create(:user) }
+      before do
+        31.times { |n| FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum_#{n}") }
+        valid_signin user
+        visit root_path
+      end
+
+      scenario { should have_css('div.pagination') }
+
+      scenario "should list each micropost" do
+        Micropost.paginate(page: 1).each do |micropost|
+          page.should have_css('li', text: micropost.content)
+        end
+      end
+    end
   end
 
   feature "Help page" do

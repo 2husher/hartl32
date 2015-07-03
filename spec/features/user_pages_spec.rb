@@ -65,6 +65,21 @@ feature "User pages" do
       scenario { should have_content(m1.content) }
       scenario { should have_content(m2.content) }
       scenario { should have_content(user.microposts.count) }
+
+      feature "pagination" do
+        before do
+          30.times { |n| FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum_#{n}") }
+          visit user_path(user)
+        end
+
+        scenario { should have_css('div.pagination') }
+
+        scenario "should list each micropost" do
+          Micropost.paginate(page: 1).each do |micropost|
+            page.should have_css('li', text: micropost.content)
+          end
+        end
+      end
     end
   end
 
