@@ -31,6 +31,10 @@ feature "Static pages" do
           page.should have_css("li##{item.id}", text: item.content)
         end
       end
+
+      feature "should render microposts count with pluralization in sidebar" do
+        scenario { should have_css("span", text: "2 microposts") }
+      end
     end
   end
 
