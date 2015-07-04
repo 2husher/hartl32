@@ -1,21 +1,8 @@
 - if signed_in?
   .row
-    %aside.span4
-      %section
-        = render 'shared/user_info'
-      %section
-        = render 'shared/micropost_form'
-    .span8
-      %h3 Micropost Feed
-      = render 'shared/feed'
+    = render 'signed_in_home'
 - else
   .center.hero-unit
-    %h1 Welcome to the Sample App
-    %h2
-      This is the home page for the
-      = succeed "." do
-        = link_to "Ruby on Rails Tutorial sample application", "http://railstutorial.org/"
-
-    = link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary"
+    = render 'non_signed_in_home'
 
 = link_to image_tag("rails.png", alt: "Rails"), 'http://rubyonrails.org/'
