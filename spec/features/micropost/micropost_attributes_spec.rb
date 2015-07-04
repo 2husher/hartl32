@@ -13,19 +13,4 @@ feature Micropost do
   scenario { @micropost.user.should == user }
 
   scenario { should be_valid }
-
-  feature "when user_id is not present" do
-    before { @micropost.user_id = nil }
-    scenario { should_not be_valid }
-  end
-
-  feature "with blank content" do
-    before { @micropost.content = " " }
-    scenario { should_not be_valid }
-  end
-
-  feature "with content that is too long" do
-    before { @micropost.content = "a" * 141 }
-    scenario { should_not be_valid }
-  end
 end
